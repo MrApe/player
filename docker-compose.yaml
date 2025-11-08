@@ -1,0 +1,27 @@
+x-logging: &default-logging
+  driver: "json-file"
+  options:
+    max-size: "5m"
+    max-file: "20"
+
+services:
+  player:
+    image: joseluisq/static-web-server:2
+    container_name: player
+    networks:
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik"
+      - "traefik.http.routers.player.rule=Host(`player.aeroapps.de`)"
+      - "traefik.http.routers.player.entrypoints=websecure"
+      - "traefik.http.routers.player.tls=true"
+      - "traefik.http.services.player.loadbalancer.server.port=80"
+    volumes:
+      - ./app:/public
+    restart: always
+    logging: *default-logging
+
+networks:
+  traefik:
+    external: true

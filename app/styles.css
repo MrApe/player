@@ -1,0 +1,401 @@
+:root {
+  color-scheme: light;
+  --bg: #f1f5f9;
+  --bg-panel: rgba(255, 255, 255, 0.92);
+  --bg-panel-alt: rgba(241, 245, 249, 0.8);
+  --text: #0f172a;
+  --text-muted: #64748b;
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --border: rgba(148, 163, 184, 0.35);
+  --border-strong: rgba(100, 116, 139, 0.55);
+  --shadow: rgba(15, 23, 42, 0.12);
+  --radius: 18px;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #ffffff, #e2e8f0, #f8fafc);
+  color: var(--text);
+  display: flex;
+  justify-content: center;
+  padding: 24px;
+}
+
+.app {
+  width: min(1080px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.app-header {
+  text-align: center;
+  padding: 24px 16px 0;
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: clamp(2.2rem, 3vw + 1rem, 3rem);
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  margin: 8px 0 0;
+  color: var(--text-muted);
+  font-size: 1rem;
+}
+
+.app-main {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.panel {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 24px 40px -32px var(--shadow);
+  display: flex;
+  flex-direction: column;
+  backdrop-filter: blur(16px);
+}
+
+.controls-panel {
+  grid-column: 1 / -1;
+}
+
+.panel-header {
+  padding: 20px 24px 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.panel-header h2 {
+  flex: 1;
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.panel-body {
+  padding: 20px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.hidden {
+  display: none;
+}
+
+.primary {
+  background: var(--accent);
+  color: #f8fafc;
+  font-weight: 600;
+  border: none;
+  border-radius: 999px;
+  padding: 0.65rem 1.4rem;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.primary:hover,
+.primary:focus-visible {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+}
+
+.primary:disabled {
+  background: rgba(148, 163, 184, 0.35);
+  color: rgba(15, 23, 42, 0.6);
+  cursor: not-allowed;
+  transform: none;
+}
+
+.hint {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.925rem;
+}
+
+.empty-state {
+  display: none;
+  padding: 12px;
+  text-align: center;
+  border-radius: calc(var(--radius) - 8px);
+  border: 1px dashed var(--border);
+  color: rgba(100, 116, 139, 0.75);
+  font-size: 0.95rem;
+}
+
+.empty-state.visible {
+  display: block;
+}
+
+.track-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.track-card {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.86);
+  border-radius: calc(var(--radius) - 6px);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  box-shadow: 0 10px 24px -24px var(--shadow);
+  padding: 14px 16px;
+}
+
+.track-card:focus-within,
+.track-card:hover {
+  border-color: rgba(37, 99, 235, 0.4);
+  box-shadow: 0 16px 30px -24px rgba(37, 99, 235, 0.35);
+}
+
+.track-card.playing {
+  border-color: var(--accent);
+  box-shadow: 0 18px 36px -24px rgba(37, 99, 235, 0.45);
+  background: linear-gradient(90deg, rgba(37, 99, 235, 0.18), rgba(37, 99, 235, 0.04));
+}
+
+.track-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.track-name {
+  margin: 0;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.track-duration {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
+
+.track-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.ghost-button {
+  background: rgba(148, 163, 184, 0.12);
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 0.4rem 0.75rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: background 0.2s ease, border 0.2s ease, transform 0.2s ease;
+}
+
+.ghost-button:hover,
+.ghost-button:focus-visible {
+  background: rgba(37, 99, 235, 0.16);
+  border-color: rgba(37, 99, 235, 0.45);
+  transform: translateY(-1px);
+}
+
+.ghost-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.95rem;
+}
+
+.field span {
+  color: var(--text-muted);
+}
+
+.field input,
+.field select {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  border-radius: 12px;
+  padding: 0.6rem 0.75rem;
+  color: var(--text);
+  font-size: 1rem;
+  transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+.field input:focus,
+.field select:focus {
+  outline: none;
+  border-color: rgba(37, 99, 235, 0.6);
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.18);
+}
+
+.mode-config {
+  display: none;
+  gap: 16px;
+  padding: 12px 14px;
+  border-radius: calc(var(--radius) - 8px);
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(148, 163, 184, 0.3);
+}
+
+.mode-config.visible {
+  display: flex;
+  flex-direction: column;
+}
+
+.mode-hint {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.progress-display {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+#currentTrackLabel {
+  font-weight: 600;
+}
+
+#currentTimeLabel,
+.progress-labels span {
+  font-variant-numeric: tabular-nums;
+}
+
+.progress-bar {
+  position: relative;
+  width: 100%;
+  height: 12px;
+  background: var(--bg-panel-alt);
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, rgba(37, 99, 235, 0.85), rgba(59, 130, 246, 0.95));
+  transition: width 0.12s ease-out;
+  z-index: 1;
+}
+
+.progress-highlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0%;
+  background: rgba(37, 99, 235, 0.22);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.progress-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.control-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.status {
+  margin-top: 18px;
+  background: rgba(255, 255, 255, 0.86);
+  border-radius: calc(var(--radius) - 8px);
+  padding: 16px;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 0.95rem;
+}
+
+#chunkStatus {
+  color: var(--text-muted);
+}
+
+.track-focus {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.track-focus input {
+  transform: scale(1.2);
+}
+
+@media (max-width: 720px) {
+  body {
+    padding: 16px;
+  }
+
+  .panel-header {
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .track-card {
+    grid-template-columns: 1fr;
+  }
+
+  .track-actions {
+    justify-content: flex-start;
+  }
+}
+
+@media (min-width: 780px) {
+  .app-main {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .controls-panel {
+    grid-column: 1 / -1;
+  }
+}

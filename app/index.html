@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="theme-color" content="#f1f5f9">
+    <title>Aerobic Player</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div class="app">
+      <header class="app-header">
+        <h1>Aerobic Player</h1>
+        <p class="subtitle">Flexible Musiksteuerung für dein Training</p>
+      </header>
+
+      <main class="app-main">
+        <section class="panel">
+          <div class="panel-header">
+            <h2>Titel</h2>
+            <button id="addTracksButton" class="primary">Titel hinzufügen</button>
+            <input id="trackFileInput" class="hidden" type="file" accept="audio/*" multiple>
+          </div>
+          <div class="panel-body">
+            <p class="hint">Füge Audio-Dateien hinzu. Reihenfolge kann verändert werden; Einstellungen bleiben gespeichert.</p>
+            <ul id="trackList" class="track-list"></ul>
+            <div id="emptyTrackState" class="empty-state">
+              <p>Noch keine Titel. Tippe auf "Titel hinzufügen", um zu starten.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-header">
+            <h2>Abspielmodus</h2>
+          </div>
+          <div class="panel-body">
+            <label class="field">
+              <span>Modus</span>
+              <select id="modeSelect">
+                <option value="continuous">Durchgehend</option>
+                <option value="gap">Pause zwischen Titeln</option>
+                <option value="single">Ein Titel wiederholen</option>
+                <option value="half">Hälfte-vorne-Hälfte</option>
+                <option value="chunks">Stückchen</option>
+              </select>
+            </label>
+
+            <div class="mode-config" data-mode="gap">
+              <label class="field">
+                <span>Pause zwischen Titeln (Sek.)</span>
+                <input id="pauseSeconds" type="number" min="0" max="30" step="0.5">
+              </label>
+            </div>
+
+            <div class="mode-config" data-mode="single">
+              <p class="mode-hint">Wähle unten den Titel, der in Dauerschleife laufen soll.</p>
+            </div>
+
+            <div class="mode-config" data-mode="half">
+              <label class="field">
+                <span>Puffer nach der Hälfte (Sek.)</span>
+                <input id="halfBufferSeconds" type="number" min="0" max="30" step="0.5">
+              </label>
+              <p class="mode-hint">Der gewählte Titel wird zuerst bis zur Hälfte + Puffer gespielt, startet dann erneut und läuft komplett durch.</p>
+            </div>
+
+            <div class="mode-config" data-mode="chunks">
+              <label class="field">
+                <span>Anzahl Stückchen</span>
+                <input id="chunkCount" type="number" min="2" max="8" step="1">
+              </label>
+              <label class="field">
+                <span>Wiederholungen je Stückchen</span>
+                <input id="chunkRepeats" type="number" min="1" max="10" step="1">
+              </label>
+              <label class="field">
+                <span>Puffer vorne (Sek.)</span>
+                <input id="chunkLeadBuffer" type="number" min="0" max="15" step="0.5">
+              </label>
+              <label class="field">
+                <span>Puffer hinten (Sek.)</span>
+                <input id="chunkTailBuffer" type="number" min="0" max="15" step="0.5">
+              </label>
+              <p class="mode-hint">Der Spieler wechselt titelweise durch alle Stückchen, Wiederholungen lassen sich pro Abschnitt definieren.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel controls-panel">
+          <div class="panel-header">
+            <h2>Steuerung</h2>
+          </div>
+          <div class="panel-body">
+            <div class="progress-display">
+              <div class="progress-header">
+                <div id="currentTrackLabel">Kein Titel ausgewählt</div>
+                <div id="currentTimeLabel">00:00</div>
+              </div>
+              <div class="progress-bar" id="progressBar">
+                <div class="progress-highlight" id="segmentHighlight"></div>
+                <div class="progress-fill" id="progressFill"></div>
+              </div>
+              <div class="progress-labels">
+                <span id="progressStartLabel">0:00</span>
+                <span id="progressEndLabel">0:00</span>
+              </div>
+            </div>
+
+            <div class="control-buttons">
+              <button id="seekBackButton" class="ghost-button" disabled>5-</button>
+              <button id="nextSegmentButton" class="ghost-button" disabled>Weiter</button>
+              <button id="playPauseButton" class="primary">Play</button>
+              <button id="stopButton" class="ghost-button" disabled>Stop</button>
+              <button id="seekForwardButton" class="ghost-button" disabled>5+</button>
+            </div>
+            <div class="status" id="statusContainer">
+              <div id="nowPlaying">Bereit.</div>
+              <div id="chunkStatus"></div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script type="module" src="scripts/app.js"></script>
+  </body>
+</html>
